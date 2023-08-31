@@ -4,15 +4,15 @@ public class FotoProdukt extends Produkt{
     private double megaPx;
     private boolean  isDigital;
 
-    public FotoProdukt(String title, double price, int quantity, double megaPx, boolean isDigital) {
-        super(title, price, quantity);
+    public FotoProdukt(String title, double price, double megaPx, boolean isDigital) {
+        super(title, price);
         this.megaPx = megaPx;
         this.isDigital = isDigital;
     }
 
     @Override
-    public int calcDiscount() {
-        int def = super.calcDiscount();
+    public int calcDiscount(int quantity) {
+        int def = super.calcDiscount(quantity);
         if (!isDigital) {
             def += 20;
         }

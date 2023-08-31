@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Programm {
     private Collection<Deal> deals = new LinkedList<>();
@@ -34,13 +31,13 @@ public class Programm {
     public Deal inputDeal() {
         Party buyer = inputParty("buyer");
         Party seller = inputParty("seller");
-        Collection<Produkt> produkts = new LinkedList<>();
+        Map<Produkt, Integer> produkts = new HashMap<>();
         String answer;
         do {
             System.out.println("Enter \"yes\" if you want to list product's characteristics or enter \"no\" if you don't: ");
             answer = keyword();
             if (answer.equals("yes")) {
-                produkts.add(inputProdukt());
+                produkts.put(inputProdukt(), keywordInt());
             }
         } while (answer.equals("yes"));
 
@@ -66,9 +63,6 @@ public class Programm {
         System.out.println("Enter product's price: ");
         double price = Double.parseDouble(keyword());
 
-        System.out.println("Enter product's quantity: ");
-        int quantity = Integer.parseInt(keyword());
-
         System.out.println("Enter \"1\" for photo product or enter \"2\" for boot product: ");
         int type = Integer.parseInt(keyword());
 
@@ -79,12 +73,12 @@ public class Programm {
             System.out.println("Enter \"1\" for digital or enter \"2\" for non-digital: ");
             boolean isDigital = keyword("boolean");
 
-            return new FotoProdukt(title, price, quantity, megaPx, isDigital);
+            return new FotoProdukt(title, price, megaPx, isDigital);
         } else {
             System.out.println("Enter size: ");
             double size = Double.parseDouble(keyword());
 
-            return new BootProdukt(title, price, quantity, size);
+            return new BootProdukt(title, price, size);
         }
     }
 
@@ -92,6 +86,13 @@ public class Programm {
         Scanner sc = new Scanner(System.in);
 
         return sc.nextLine();
+    }
+
+    public Integer keywordInt() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter quantity: ");
+
+        return Integer.parseInt(sc.nextLine());
     }
 
     public boolean keyword(String reason) {
