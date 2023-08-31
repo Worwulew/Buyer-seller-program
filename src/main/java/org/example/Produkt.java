@@ -1,6 +1,6 @@
 package org.example;
 
-public class Produkt {
+public abstract class Produkt {
     private static final int DEFAULTDISCOUNT = 10;
     private String title;
     private double price;

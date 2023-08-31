@@ -1,14 +1,15 @@
 package org.example;
 
+import java.util.Collection;
 import java.util.Date;
 
 public class Deal {
     private Date date;
     private Party buyer;
     private Party seller;
-    private Produkt[] produkts;
+    private Collection<Produkt> produkts;
 
-    public Deal(Party buyer, Party seller, Produkt[] produkts) {
+    public Deal(Party buyer, Party seller, Collection<Produkt> produkts) {
         this.buyer = buyer;
         this.seller = seller;
         this.produkts = produkts;

@@ -1,10 +1,12 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Programm {
-    private Deal[] deals = new Deal[10];
+    private Collection<Deal> deals = new LinkedList<>();
     public static int tail = 0;
 
     public void output() {
@@ -13,8 +15,8 @@ public class Programm {
                 break;
             } else {
                 System.out.println("Date: " + d.getDate());
-                System.out.println("Buyer " + d.getBuyer().getName()
-                        + " bought from seller " + d.getSeller().getName() + " such items as: "
+                System.out.println("Buyer \"" + d.getBuyer().getName()
+                        + "\" bought from seller \"" + d.getSeller().getName() + "\" such items as: "
                         + d.getProdukts() + "with total sum of " + d.getSum() + " EU.");
             }
         }
@@ -22,8 +24,7 @@ public class Programm {
 
     public void input() {
         if (tail != 10) {
-            Deal d = inputDeal();
-            deals[tail] = d;
+            deals.add(inputDeal());
             tail++;
         } else {
             System.out.println("Not enough place");
@@ -33,7 +34,15 @@ public class Programm {
     public Deal inputDeal() {
         Party buyer = inputParty("buyer");
         Party seller = inputParty("seller");
-        Produkt[] produkts = { inputProdukt(), inputProdukt() };
+        Collection<Produkt> produkts = new LinkedList<>();
+        String answer;
+        do {
+            System.out.println("Enter \"yes\" if you want to list product's characteristics or enter \"no\" if you don't: ");
+            answer = keyword();
+            if (answer.equals("yes")) {
+                produkts.add(inputProdukt());
+            }
+        } while (answer.equals("yes"));
 
         return new Deal(buyer, seller, produkts);
     }
@@ -60,14 +69,14 @@ public class Programm {
         System.out.println("Enter product's quantity: ");
         int quantity = Integer.parseInt(keyword());
 
-        System.out.println("Enter 1 for foto product or enter 2 for boot product: ");
+        System.out.println("Enter \"1\" for photo product or enter \"2\" for boot product: ");
         int type = Integer.parseInt(keyword());
 
         if (1 == type) {
             System.out.println("Enter megaPx: ");
             double megaPx = Double.parseDouble(keyword());
 
-            System.out.println("Enter 1 for digital or enter 2 for not digital: ");
+            System.out.println("Enter \"1\" for digital or enter \"2\" for non-digital: ");
             boolean isDigital = keyword("boolean");
 
             return new FotoProdukt(title, price, quantity, megaPx, isDigital);
@@ -81,16 +90,14 @@ public class Programm {
 
     public String keyword() {
         Scanner sc = new Scanner(System.in);
-        String string = sc.nextLine();
 
-        return string;
+        return sc.nextLine();
     }
 
     public boolean keyword(String reason) {
         Scanner sc = new Scanner(System.in);
         boolean res;
-        int result = sc.nextInt();
-        if (result == 1) {
+        if (sc.nextInt() == 1) {
             return res = true;
         } else {
             return res = false;
