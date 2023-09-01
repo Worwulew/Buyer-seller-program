@@ -35,4 +35,10 @@ public abstract class Produkt {
     public double getPrice() {
         return price;
     }
+
+    public String info() {
+        return "Product: " + title +
+                ", price: " + price +
+                " EU, ";
+    }
 }

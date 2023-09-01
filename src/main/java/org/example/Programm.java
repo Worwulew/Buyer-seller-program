@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Programm {
     private Collection<Deal> deals = new LinkedList<>();
+    private List<Produkt> createdProds = new LinkedList<>();
     public static int tail = 0;
 
     public void output() {
@@ -32,14 +33,27 @@ public class Programm {
         Party buyer = inputParty("buyer");
         Party seller = inputParty("seller");
         Map<Produkt, Integer> produkts = new HashMap<>();
-        String answer;
+        int answer;
         do {
-            System.out.println("Enter \"yes\" if you want to list product's characteristics or enter \"no\" if you don't: ");
-            answer = keyword();
-            if (answer.equals("yes")) {
-                produkts.put(inputProdukt(), keywordInt());
+            System.out.println("Enter\n\"1\" - to list product's characteristics\n\"2\" - to select \n\"3\" - to quit: ");
+            answer = keywordInt();
+            if (answer == 1) {
+                Produkt p = inputProdukt();
+                produkts.put(p, keywordQuantity());
+                createdProds.add(p);
+            } else if (answer == 2) {
+                for (int i = 0; i < createdProds.size(); i++) {
+                    System.out.print(i + 1 + ": " + createdProds.get(i).info());
+                }
+                System.out.println("Enter the number to select: ");
+                int choice = keywordInt();
+                for (int i = 0; i < createdProds.size(); i++) {
+                    if (i == choice - 1) {
+                        produkts.put(createdProds.get(i), keywordQuantity());
+                    }
+                }
             }
-        } while (answer.equals("yes"));
+        } while (answer == 1 || answer == 2);
 
         return new Deal(buyer, seller, produkts);
     }
@@ -48,23 +62,25 @@ public class Programm {
         if (reason == "buyer") {
             System.out.println("Enter the buyer's name: ");
             String name = keyword();
+
             return new Party(name);
         } else {
             System.out.println("Enter the seller's name: ");
             String name = keyword();
+
             return new Party(name);
         }
     }
 
     public Produkt inputProdukt() {
+        System.out.println("Enter \"1\" for photo product or enter \"2\" for boot product: ");
+        int type = Integer.parseInt(keyword());
+
         System.out.println("Enter product's title: ");
         String title = keyword();
 
         System.out.println("Enter product's price: ");
         double price = Double.parseDouble(keyword());
-
-        System.out.println("Enter \"1\" for photo product or enter \"2\" for boot product: ");
-        int type = Integer.parseInt(keyword());
 
         if (1 == type) {
             System.out.println("Enter megaPx: ");
@@ -83,25 +99,31 @@ public class Programm {
     }
 
     public String keyword() {
-        Scanner sc = new Scanner(System.in);
 
-        return sc.nextLine();
+        return scanner().nextLine();
     }
 
     public Integer keywordInt() {
-        Scanner sc = new Scanner(System.in);
+
+        return Integer.parseInt(scanner().nextLine());
+    }
+
+    public Integer keywordQuantity() {
         System.out.println("Enter quantity: ");
 
-        return Integer.parseInt(sc.nextLine());
+        return Integer.parseInt(scanner().nextLine());
     }
 
     public boolean keyword(String reason) {
-        Scanner sc = new Scanner(System.in);
         boolean res;
-        if (sc.nextInt() == 1) {
+        if (scanner().nextInt() == 1) {
             return res = true;
         } else {
             return res = false;
         }
+    }
+
+    public Scanner scanner() {
+        return new Scanner(System.in);
     }
 }

@@ -7,4 +7,9 @@ public class BootProdukt extends Produkt{
         super(title, price);
         this.size = size;
     }
+
+    @Override
+    public String info() {
+        return super.info() + "size: " + size + "\n";
+    }
 }
