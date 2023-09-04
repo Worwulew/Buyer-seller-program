@@ -22,6 +22,14 @@ public class FotoProdukt extends Produkt{
 
     @Override
     public String info() {
-        return super.info() + "megaPx: " + megaPx + ", digital: " + isDigital + "\n";
+        return super.info() + "megaPx: " + megaPx + ", digital: " + isDigital();
+    }
+
+    public String isDigital() {
+        if (isDigital) {
+            return "yes";
+        } else {
+            return "no";
+        }
     }
 }

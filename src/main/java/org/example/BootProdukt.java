@@ -10,6 +10,6 @@ public class BootProdukt extends Produkt{
 
     @Override
     public String info() {
-        return super.info() + "size: " + size + "\n";
+        return super.info() + "size: " + size;
     }
 }

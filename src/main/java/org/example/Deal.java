@@ -47,8 +47,7 @@ public class Deal {
     public String getProdukts() {
         String productNames = "";
         for (Map.Entry<Produkt, Integer> pr : produkts.entrySet()) {
-            productNames += pr.getKey().getTitle() + " in quantity of "
-                    + pr.getValue() + " at a price of " + pr.getKey().getPrice() + ", ";
+            productNames += pr.getKey().info() + ", quantity: " + pr.getValue();
         }
 
         return productNames;

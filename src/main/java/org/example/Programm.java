@@ -1,5 +1,9 @@
 package org.example;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Programm {
@@ -12,10 +16,11 @@ public class Programm {
             if (d == null) {
                 break;
             } else {
-                System.out.println("Date: " + d.getDate());
-                System.out.println("Buyer \"" + d.getBuyer().getName()
+                String outputMessage = "Date: " + d.getDate() + "\n" + "Buyer \"" + d.getBuyer().getName()
                         + "\" bought from seller \"" + d.getSeller().getName() + "\" such items as: "
-                        + d.getProdukts() + "with total sum of " + d.getSum() + " EU.");
+                        + d.getProdukts() + ", with total sum of " + d.getSum() + " EU." + "\n";
+                System.out.println(outputMessage);
+                textReport(outputMessage);
             }
         }
     }
@@ -34,6 +39,7 @@ public class Programm {
         Party seller = inputParty("seller");
         Map<Produkt, Integer> produkts = new HashMap<>();
         int answer;
+
         do {
             System.out.println("Enter\n\"1\" - to list product's characteristics\n\"2\" - to select \n\"3\" - to quit: ");
             answer = keywordInt();
@@ -43,7 +49,7 @@ public class Programm {
                 createdProds.add(p);
             } else if (answer == 2) {
                 for (int i = 0; i < createdProds.size(); i++) {
-                    System.out.print(i + 1 + ": " + createdProds.get(i).info());
+                    System.out.print(i + 1 + ": " + createdProds.get(i).info() + "\n");
                 }
                 System.out.println("Enter the number to select: ");
                 int choice = keywordInt();
@@ -99,12 +105,10 @@ public class Programm {
     }
 
     public String keyword() {
-
         return scanner().nextLine();
     }
 
     public Integer keywordInt() {
-
         return Integer.parseInt(scanner().nextLine());
     }
 
@@ -125,5 +129,26 @@ public class Programm {
 
     public Scanner scanner() {
         return new Scanner(System.in);
+    }
+
+    public void textReport(String outputMessage) {
+        PrintWriter pW = null;
+        try {
+            File list = new File("./output.txt");
+            if (list.createNewFile()) {
+                System.out.println("Report created");
+            }
+            pW = new PrintWriter(new FileWriter(list, true));
+            pW.write(outputMessage);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                assert pW != null;
+                pW.close();
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        }
     }
 }
