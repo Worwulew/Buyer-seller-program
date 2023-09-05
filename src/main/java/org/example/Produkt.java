@@ -37,7 +37,7 @@ public abstract class Produkt {
     }
 
     public String info() {
-        return "Product: " + title +
+        return " Product: " + title +
                 ", price: " + price +
                 " EU, ";
     }

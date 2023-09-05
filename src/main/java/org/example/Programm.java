@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Programm {
@@ -16,8 +17,9 @@ public class Programm {
             if (d == null) {
                 break;
             } else {
-                String outputMessage = "Date: " + d.getDate() + "\n" + "Buyer \"" + d.getBuyer().getName()
-                        + "\" bought from seller \"" + d.getSeller().getName() + "\" such items as: "
+                String outputMessage = "Date: " + new SimpleDateFormat("dd-MM-yyyy").format(d.getDate())
+                        + "\n" + "Buyer \"" + d.getBuyer().getName()
+                        + "\" bought from seller \"" + d.getSeller().getName() + "\" such items as:"
                         + d.getProdukts() + ", with total sum of " + d.getSum() + " EU." + "\n";
                 System.out.println(outputMessage);
                 textReport(outputMessage);
@@ -41,13 +43,13 @@ public class Programm {
         int answer;
 
         do {
-            System.out.println("Enter\n\"1\" - to list product's characteristics\n\"2\" - to select \n\"3\" - to quit: ");
+            System.out.println("Enter:\n\"1\" - to list product's characteristics\n\"2\" - to select \n\"3\" - to quit: ");
             answer = keywordInt();
             if (answer == 1) {
                 Produkt p = inputProdukt();
                 produkts.put(p, keywordQuantity());
                 createdProds.add(p);
-            } else if (answer == 2) {
+            } else if (answer == 2 && createdProds.size() > 0) {
                 for (int i = 0; i < createdProds.size(); i++) {
                     System.out.print(i + 1 + ": " + createdProds.get(i).info() + "\n");
                 }
@@ -67,30 +69,28 @@ public class Programm {
     public Party inputParty(String reason) {
         if (reason == "buyer") {
             System.out.println("Enter the buyer's name: ");
-            String name = keyword();
 
-            return new Party(name);
+            return new Party(keyword());
         } else {
             System.out.println("Enter the seller's name: ");
-            String name = keyword();
 
-            return new Party(name);
+            return new Party(keyword());
         }
     }
 
     public Produkt inputProdukt() {
         System.out.println("Enter \"1\" for photo product or enter \"2\" for boot product: ");
-        int type = Integer.parseInt(keyword());
+        int type = keywordInt();
 
         System.out.println("Enter product's title: ");
         String title = keyword();
 
         System.out.println("Enter product's price: ");
-        double price = Double.parseDouble(keyword());
+        double price = keywordDouble();
 
         if (1 == type) {
             System.out.println("Enter megaPx: ");
-            double megaPx = Double.parseDouble(keyword());
+            double megaPx = keywordDouble();
 
             System.out.println("Enter \"1\" for digital or enter \"2\" for non-digital: ");
             boolean isDigital = keyword("boolean");
@@ -98,33 +98,81 @@ public class Programm {
             return new FotoProdukt(title, price, megaPx, isDigital);
         } else {
             System.out.println("Enter size: ");
-            double size = Double.parseDouble(keyword());
+            double size = keywordDouble();
 
             return new BootProdukt(title, price, size);
         }
     }
 
     public String keyword() {
-        return scanner().nextLine();
+        String output;
+        do {
+            System.out.print("Enter here: ");
+            output = scanner().nextLine();
+        } while (isNumeric(output) || output.equals(""));
+
+        return output;
     }
 
     public Integer keywordInt() {
-        return Integer.parseInt(scanner().nextLine());
+        int output;
+        do
+        {
+            try {
+                output = Integer.parseInt(scanner().nextLine());
+                break;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Try again, please (numbers only)");
+            }
+        } while (true);
+
+        return output;
+    }
+
+    public double keywordDouble() {
+        double output;
+        do
+        {
+            try {
+                output = Double.parseDouble(scanner().nextLine());
+                break;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Try again, please (numbers and decimal only)");
+            }
+        } while (true);
+
+        return output;
     }
 
     public Integer keywordQuantity() {
         System.out.println("Enter quantity: ");
 
-        return Integer.parseInt(scanner().nextLine());
+        return keywordInt();
     }
 
     public boolean keyword(String reason) {
         boolean res;
-        if (scanner().nextInt() == 1) {
+        if (keywordInt() == 1) {
             return res = true;
         } else {
             return res = false;
         }
+    }
+
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     public Scanner scanner() {
