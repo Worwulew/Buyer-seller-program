@@ -10,6 +10,7 @@ import java.util.*;
 public class Programm {
     private Collection<Deal> deals = new LinkedList<>();
     private List<Produkt> createdProds = new LinkedList<>();
+    private static Scanner sc = new Scanner(System.in);
     public static int tail = 0;
 
     public void output() {
@@ -28,12 +29,8 @@ public class Programm {
     }
 
     public void input() {
-        if (tail != 10) {
-            deals.add(inputDeal());
-            tail++;
-        } else {
-            System.out.println("Not enough place");
-        }
+        deals.add(inputDeal());
+        tail++;
     }
 
     public Deal inputDeal() {
@@ -105,13 +102,13 @@ public class Programm {
     }
 
     public String keyword() {
-        String output;
-        do {
-            System.out.print("Enter here: ");
-            output = scanner().nextLine();
-        } while (isNumeric(output) || output.equals(""));
+        String output = scanner();
+        if (!isNumeric(output) && !output.equals("")) {
+            return output;
+        }
 
-        return output;
+        System.out.println("Try again, please (no numbers)");
+        return keyword();
     }
 
     public Integer keywordInt() {
@@ -119,7 +116,7 @@ public class Programm {
         do
         {
             try {
-                output = Integer.parseInt(scanner().nextLine());
+                output = Integer.parseInt(scanner());
                 break;
             }
             catch (Exception e)
@@ -136,7 +133,7 @@ public class Programm {
         do
         {
             try {
-                output = Double.parseDouble(scanner().nextLine());
+                output = Double.parseDouble(scanner());
                 break;
             }
             catch (Exception e)
@@ -172,11 +169,12 @@ public class Programm {
         } catch (NumberFormatException nfe) {
             return false;
         }
+
         return true;
     }
 
-    public Scanner scanner() {
-        return new Scanner(System.in);
+    public String scanner() {
+        return sc.nextLine();
     }
 
     public void textReport(String outputMessage) {
